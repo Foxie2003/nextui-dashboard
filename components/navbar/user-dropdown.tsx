@@ -1,52 +1,73 @@
-import {Avatar, Dropdown, Navbar, Text} from '@nextui-org/react';
-import React from 'react';
-import {DarkModeSwitch} from './darkmodeswitch';
+import { Dropdown, Navbar, Text, Avatar } from "@nextui-org/react";
+import React from "react";
+import { DarkModeSwitch } from "./darkmodeswitch";
+import { useAuth } from "../../contexts/AuthContext";
+import { useRouter } from "next/router";
 
 export const UserDropdown = () => {
-   return (
-      <Dropdown placement="bottom-right">
-         <Navbar.Item>
-            <Dropdown.Trigger>
-               <Avatar
-                  bordered
-                  as="button"
-                  color="secondary"
-                  size="md"
-                  src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-               />
-            </Dropdown.Trigger>
-         </Navbar.Item>
-         <Dropdown.Menu
-            aria-label="User menu actions"
-            onAction={(actionKey) => console.log({actionKey})}
-         >
-            <Dropdown.Item key="profile" css={{height: '$18'}}>
-               <Text b color="inherit" css={{d: 'flex'}}>
-                  Signed in as
-               </Text>
-               <Text b color="inherit" css={{d: 'flex'}}>
-                  zoey@example.com
-               </Text>
-            </Dropdown.Item>
-            <Dropdown.Item key="settings" withDivider>
-               My Settings
-            </Dropdown.Item>
-            <Dropdown.Item key="team_settings">Team Settings</Dropdown.Item>
-            <Dropdown.Item key="analytics" withDivider>
-               Analytics
-            </Dropdown.Item>
-            <Dropdown.Item key="system">System</Dropdown.Item>
-            <Dropdown.Item key="configurations">Configurations</Dropdown.Item>
-            <Dropdown.Item key="help_and_feedback" withDivider>
-               Help & Feedback
-            </Dropdown.Item>
-            <Dropdown.Item key="logout" withDivider color="error">
-               Log Out
-            </Dropdown.Item>
-            <Dropdown.Item key="switch" withDivider>
-               <DarkModeSwitch />
-            </Dropdown.Item>
-         </Dropdown.Menu>
-      </Dropdown>
-   );
+  const { isAuthenticated, user, logout } = useAuth();
+  const router = useRouter();
+
+  if (!isAuthenticated) {
+    return (
+      <Navbar.Item>
+        <Avatar
+          as="button"
+          color="secondary"
+          size="md"
+          src="https://i.pravatar.cc/150?u=guest"
+          onClick={() => router.push("/login")}
+        />
+      </Navbar.Item>
+    );
+  }
+
+  return (
+    <Dropdown placement="bottom-right">
+      <Navbar.Item>
+        <Dropdown.Trigger>
+          <Avatar
+            bordered
+            as="button"
+            color="secondary"
+            size="md"
+            src={user?.avatarUrl || "https://i.pravatar.cc/150?u=user"}
+          />
+        </Dropdown.Trigger>
+      </Navbar.Item>
+      <Dropdown.Menu
+        aria-label="User menu actions"
+        onAction={(actionKey) => {
+          if (actionKey === "logout") {
+            logout();
+            router.push("/");
+          } else if (actionKey === "profile") {
+            router.push("/profile");
+          }
+        }}
+      >
+        <Dropdown.Item key="profile" css={{ height: "$18" }}>
+          <Text b color="inherit" css={{ d: "flex" }}>
+            Đăng nhập với
+          </Text>
+          <Text b color="inherit" css={{ d: "flex" }}>
+            {user?.email || "user@example.com"}
+          </Text>
+        </Dropdown.Item>
+        <Dropdown.Item key="settings" withDivider>
+          Cài đặt tài khoản
+        </Dropdown.Item>
+        <Dropdown.Item key="tickets">Vé của tôi</Dropdown.Item>
+        <Dropdown.Item key="help_and_feedback" withDivider>
+          Trợ giúp & Phản hồi
+        </Dropdown.Item>
+        <Dropdown.Item key="logout" withDivider color="error">
+          Đăng xuất
+        </Dropdown.Item>
+        <Dropdown.Item key="switch" withDivider>
+          <DarkModeSwitch />
+        </Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
+  );
 };
