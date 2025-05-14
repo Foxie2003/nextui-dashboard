@@ -12,14 +12,8 @@ export interface Movie {
   ngon_ngu: string;
   trailer?: string;
   ngay_khoi_chieu?: string;
-  dao_dien?: Person[];
-  dien_vien?: Person[];
-}
-
-export interface Person {
-  id_nguoi: number;
-  ho_ten: string;
-  hinh_anh?: string;
+  dao_dien?: string;
+  dien_vien?: string;
 }
 
 const movieService = {
@@ -121,16 +115,7 @@ const movieService = {
     const response = await api.postForm('/phim/upload-image', formData);
     return response.data;
   },
-  
-  addCastMember: async (id_phim: number, id_nguoi: number, vai_tro: number) => {
-    const response = await api.post('/phim/cast', { id_phim, id_nguoi, vai_tro });
-    return response.data;
-  },
-  
-  removeCastMember: async (id_phim: number, id_nguoi: number) => {
-    const response = await api.delete('/phim/cast', { data: { id_phim, id_nguoi } });
-    return response.data;
-  },
+
   
   getMoviesByGenre: async (genreId: number) => {
     const response = await api.get(`/phim/theloai/${genreId}`);
@@ -141,6 +126,7 @@ const movieService = {
 };
 
 export default movieService;
+
 
 
 

@@ -146,11 +146,11 @@ const MovieDetail = () => {
 
           <Grid xs={12} sm={8}>
             <Card>
+              <Card.Header>
+                <Text h3>{movie.ten_phim}</Text>
+              </Card.Header>
               <Card.Body>
-                <Text h4>Thông tin phim</Text>
-                <Spacer y={1} />
-
-                <Flex direction="column" css={{ gap: "$2" }}>
+                <Flex direction="column" css={{ gap: "$4" }}>
                   <Text>
                     <Text b>Thể loại:</Text>{" "}
                     {movie.ten_the_loai || "Chưa cập nhật"}
@@ -162,113 +162,31 @@ const MovieDetail = () => {
                       : "Chưa cập nhật"}
                   </Text>
                   <Text>
+                    <Text b>Độ tuổi:</Text> {movie.do_tuoi || "Chưa cập nhật"}
+                  </Text>
+                  <Text>
+                    <Text b>Ngôn ngữ:</Text> {movie.ngon_ngu || "Chưa cập nhật"}
+                  </Text>
+                  <Text>
                     <Text b>Ngày khởi chiếu:</Text>{" "}
                     {movie.ngay_khoi_chieu
                       ? formatDate(movie.ngay_khoi_chieu)
                       : "Chưa cập nhật"}
                   </Text>
                   <Text>
-                    <Text b>Độ tuổi:</Text> {movie.do_tuoi || "Chưa cập nhật"}
+                    <Text b>Đạo diễn:</Text> {movie.dao_dien || "Chưa cập nhật"}
                   </Text>
                   <Text>
-                    <Text b>Ngôn ngữ:</Text> {movie.ngon_ngu || "Chưa cập nhật"}
+                    <Text b>Diễn viên:</Text>{" "}
+                    {movie.dien_vien || "Chưa cập nhật"}
                   </Text>
-                  <Spacer y={1} />
                   <Text>
                     <Text b>Mô tả:</Text>
                   </Text>
                   <Text>{movie.mo_ta || "Chưa có mô tả"}</Text>
                 </Flex>
-
-                <Spacer y={1} />
-
-                {isAdmin && (
-                  <Flex justify="end" css={{ gap: "$4" }}>
-                    <Button
-                      as="a"
-                      href={`/movies/edit/${movie.id_phim}`}
-                      auto
-                      color="primary"
-                    >
-                      Chỉnh sửa
-                    </Button>
-                    <Button
-                      auto
-                      color="error"
-                      onClick={async () => {
-                        if (confirm("Bạn có chắc chắn muốn xóa phim này?")) {
-                          try {
-                            await movieService.deleteMovie(movie.id_phim);
-                            router.push("/movies");
-                          } catch (err: any) {
-                            alert(
-                              err.message ||
-                                "Không thể xóa phim. Vui lòng thử lại sau."
-                            );
-                          }
-                        }
-                      }}
-                    >
-                      Xóa
-                    </Button>
-                  </Flex>
-                )}
               </Card.Body>
             </Card>
-
-            {/* Hiển thị đạo diễn */}
-            {movie.dao_dien && movie.dao_dien.length > 0 && (
-              <Card css={{ mt: "$6" }}>
-                <Card.Body>
-                  <Text h4>Đạo diễn</Text>
-                  <Spacer y={1} />
-                  <Grid.Container gap={2}>
-                    {movie.dao_dien.map((person) => (
-                      <Grid key={person.id_nguoi} xs={6} sm={4}>
-                        <Flex direction="column" align="center">
-                          <Avatar
-                            src={
-                              person.hinh_anh
-                                ? `${process.env.NEXT_PUBLIC_API_URL}${person.hinh_anh}`
-                                : undefined
-                            }
-                            css={{ size: "$20" }}
-                          />
-                          <Text css={{ mt: "$2" }}>{person.ho_ten}</Text>
-                        </Flex>
-                      </Grid>
-                    ))}
-                  </Grid.Container>
-                </Card.Body>
-              </Card>
-            )}
-
-            {/* Hiển thị diễn viên */}
-            {movie.dien_vien && movie.dien_vien.length > 0 && (
-              <Card css={{ mt: "$6" }}>
-                <Card.Body>
-                  <Text h4>Diễn viên</Text>
-                  <Spacer y={1} />
-                  <Grid.Container gap={2}>
-                    {movie.dien_vien.map((person) => (
-                      <Grid key={person.id_nguoi} xs={6} sm={3}>
-                        <Flex direction="column" align="center">
-                          <Avatar
-                            src={
-                              person.hinh_anh
-                                ? `${process.env.NEXT_PUBLIC_API_URL}${person.hinh_anh}`
-                                : undefined
-                            }
-                            css={{ size: "$20" }}
-                          />
-                          <Text css={{ mt: "$2" }}>{person.ho_ten}</Text>
-                        </Flex>
-                      </Grid>
-                    ))}
-                  </Grid.Container>
-                </Card.Body>
-              </Card>
-            )}
           </Grid>
         </Grid.Container>
 

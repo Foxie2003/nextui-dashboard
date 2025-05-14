@@ -35,6 +35,8 @@ const EditMovie = () => {
     ngon_ngu: "",
     trailer: "",
     ngay_khoi_chieu: "",
+    dao_dien: "",
+    dien_vien: "",
   });
   const [error, setError] = useState("");
 
@@ -84,6 +86,8 @@ const EditMovie = () => {
           ngay_khoi_chieu: movie.ngay_khoi_chieu
             ? movie.ngay_khoi_chieu.split("T")[0]
             : "",
+          dao_dien: movie.dao_dien || "",
+          dien_vien: movie.dien_vien || "",
         });
 
         // Cập nhật thể loại đã chọn
@@ -188,6 +192,10 @@ const EditMovie = () => {
       if (imageFile) {
         movieFormData.append("hinh_anh", imageFile);
       }
+
+      // Thêm các trường đạo diễn và diễn viên vào form
+      movieFormData.append("dao_dien", formData.dao_dien || "");
+      movieFormData.append("dien_vien", formData.dien_vien || "");
 
       // Gọi API cập nhật phim
       await movieService.updateMovie(Number(id), movieFormData);
@@ -326,6 +334,26 @@ const EditMovie = () => {
                       onChange={handleInputChange}
                       fullWidth
                       bordered
+                    />
+
+                    <Input
+                      label="Đạo diễn"
+                      name="dao_dien"
+                      value={formData.dao_dien}
+                      onChange={handleInputChange}
+                      fullWidth
+                      bordered
+                      placeholder="Tên đạo diễn, cách nhau bởi dấu phẩy"
+                    />
+
+                    <Input
+                      label="Diễn viên"
+                      name="dien_vien"
+                      value={formData.dien_vien}
+                      onChange={handleInputChange}
+                      fullWidth
+                      bordered
+                      placeholder="Tên diễn viên, cách nhau bởi dấu phẩy"
                     />
                   </Flex>
                 </Grid>

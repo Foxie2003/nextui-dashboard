@@ -33,6 +33,8 @@ const CreateMovie = () => {
     ngon_ngu: "",
     trailer: "",
     ngay_khoi_chieu: "",
+    dao_dien: "",
+    dien_vien: "",
   });
   const [error, setError] = useState("");
 
@@ -142,6 +144,8 @@ const CreateMovie = () => {
       movieFormData.append("id_the_loai", selectedGenre);
       movieFormData.append("do_tuoi", formData.do_tuoi);
       movieFormData.append("ngon_ngu", formData.ngon_ngu);
+      movieFormData.append("dao_dien", formData.dao_dien || "");
+      movieFormData.append("dien_vien", formData.dien_vien || "");
 
       if (formData.thoi_luong) {
         movieFormData.append("thoi_luong", formData.thoi_luong);
@@ -287,6 +291,26 @@ const CreateMovie = () => {
                       fullWidth
                       bordered
                       placeholder="https://www.youtube.com/watch?v=..."
+                    />
+
+                    <Input
+                      label="Đạo diễn"
+                      name="dao_dien"
+                      value={formData.dao_dien}
+                      onChange={handleInputChange}
+                      fullWidth
+                      bordered
+                      placeholder="Tên đạo diễn, cách nhau bởi dấu phẩy"
+                    />
+
+                    <Input
+                      label="Diễn viên"
+                      name="dien_vien"
+                      value={formData.dien_vien}
+                      onChange={handleInputChange}
+                      fullWidth
+                      bordered
+                      placeholder="Tên diễn viên, cách nhau bởi dấu phẩy"
                     />
                   </Flex>
                 </Grid>

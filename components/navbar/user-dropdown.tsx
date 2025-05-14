@@ -43,24 +43,23 @@ export const UserDropdown = () => {
             router.push("/");
           } else if (actionKey === "profile") {
             router.push("/profile");
+          } else if (actionKey === "tickets") {
+            router.push("/tickets");
           }
         }}
       >
         <Dropdown.Item key="profile" css={{ height: "$18" }}>
           <Text b color="inherit" css={{ d: "flex" }}>
-            Đăng nhập với
+            {user?.isAdmin ? "Quản lý:" : "Nhân viên:"}
           </Text>
           <Text b color="inherit" css={{ d: "flex" }}>
             {user?.email || "user@example.com"}
           </Text>
         </Dropdown.Item>
-        <Dropdown.Item key="settings" withDivider>
-          Cài đặt tài khoản
+        <Dropdown.Item key="profile" withDivider>
+          Thông tin cá nhân
         </Dropdown.Item>
         <Dropdown.Item key="tickets">Vé của tôi</Dropdown.Item>
-        <Dropdown.Item key="help_and_feedback" withDivider>
-          Trợ giúp & Phản hồi
-        </Dropdown.Item>
         <Dropdown.Item key="logout" withDivider color="error">
           Đăng xuất
         </Dropdown.Item>

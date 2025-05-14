@@ -1,0 +1,296 @@
+# API Quản lý Ghế Ngồi và Cấu trúc Dữ liệu
+
+## 1. Cấu trúc Dữ liệu Bảng GheNgoi
+
+```
+{
+  "id_ghe_ngoi": number,       // ID ghế ngồi (khóa chính)
+  "id_suat_chieu": number,     // ID suất chiếu (khóa ngoại)
+  "ten_ghe": string,           // Tên ghế (ví dụ: A1, B2, C3)
+  "trang_thai": number         // Trạng thái ghế (0: Trống, 1: Đã đặt, 2: Đang chọn)
+}
+```
+
+## 2. API Ghế Ngồi
+
+### 2.1. Lấy tất cả ghế ngồi
+- **Endpoint:** `/api/ghengoi`
+- **Method:** GET
+- **Mô tả:** Lấy danh sách tất cả ghế ngồi kèm thông tin liên quan như suất chiếu, phim, phòng chiếu
+- **Response:**
+```json
+[
+  {
+    "id_ghe_ngoi": 1,
+    "id_suat_chieu": 1,
+    "ten_ghe": "A1",
+    "trang_thai": 0,
+    "thoi_gian": "2023-06-01T10:00:00",
+    "ten_phim": "Tên phim",
+    "ten_phong_chieu": "Phòng 1"
+  },
+  ...
+]
+```
+- **Cách gọi:**
+```javascript
+fetch('http://localhost:3001/api/ghengoi')
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));
+```
+
+### 2.2. Lấy ghế ngồi theo ID
+- **Endpoint:** `/api/ghengoi/:id_ghe_ngoi`
+- **Method:** GET
+- **Mô tả:** Lấy thông tin chi tiết của một ghế ngồi theo ID
+- **Response:**
+```json
+{
+  "id_ghe_ngoi": 1,
+  "id_suat_chieu": 1,
+  "ten_ghe": "A1",
+  "trang_thai": 0,
+  "thoi_gian": "2023-06-01T10:00:00",
+  "ten_phim": "Tên phim",
+  "ten_phong_chieu": "Phòng 1"
+}
+```
+- **Cách gọi:**
+```javascript
+fetch('http://localhost:3001/api/ghengoi/1')
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));
+```
+
+### 2.3. Lấy ghế ngồi theo suất chiếu
+- **Endpoint:** `/api/ghengoi/suat/:id_suat_chieu`
+- **Method:** GET
+- **Mô tả:** Lấy danh sách ghế ngồi theo ID suất chiếu
+- **Response:**
+```json
+[
+  {
+    "id_ghe_ngoi": 1,
+    "id_suat_chieu": 1,
+    "ten_ghe": "A1",
+    "trang_thai": 0
+  },
+  {
+    "id_ghe_ngoi": 2,
+    "id_suat_chieu": 1,
+    "ten_ghe": "A2",
+    "trang_thai": 1
+  },
+  ...
+]
+```
+- **Cách gọi:**
+```javascript
+fetch('http://localhost:3001/api/ghengoi/suat/1')
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));
+```
+
+### 2.4. Tạo ghế ngồi mới
+- **Endpoint:** `/api/ghengoi`
+- **Method:** POST
+- **Mô tả:** Tạo một ghế ngồi mới cho suất chiếu
+- **Request Body:**
+```json
+{
+  "id_suat_chieu": 1,
+  "ten_ghe": "A1",
+  "trang_thai": 0
+}
+```
+- **Response:**
+```json
+{
+  "message": "Ghế ngồi đã được thêm"
+}
+```
+- **Cách gọi:**
+```javascript
+fetch('http://localhost:3001/api/ghengoi', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    id_suat_chieu: 1,
+    ten_ghe: "A1",
+    trang_thai: 0
+  }),
+})
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));
+```
+
+### 2.5. Tạo nhiều ghế ngồi cùng lúc
+- **Endpoint:** `/api/ghengoi/multiple`
+- **Method:** POST
+- **Mô tả:** Tạo nhiều ghế ngồi cùng lúc cho một suất chiếu
+- **Request Body:**
+```json
+{
+  "id_suat_chieu": 1,
+  "danh_sach_ghe": [
+    {
+      "ten_ghe": "A1",
+      "trang_thai": 0
+    },
+    {
+      "ten_ghe": "A2",
+      "trang_thai": 0
+    },
+    {
+      "ten_ghe": "A3",
+      "trang_thai": 0
+    }
+  ]
+}
+```
+- **Response:**
+```json
+{
+  "message": "Các ghế ngồi đã được thêm"
+}
+```
+- **Cách gọi:**
+```javascript
+fetch('http://localhost:3001/api/ghengoi/multiple', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    id_suat_chieu: 1,
+    danh_sach_ghe: [
+      { ten_ghe: "A1", trang_thai: 0 },
+      { ten_ghe: "A2", trang_thai: 0 },
+      { ten_ghe: "A3", trang_thai: 0 }
+    ]
+  }),
+})
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));
+```
+
+### 2.6. Cập nhật trạng thái ghế ngồi
+- **Endpoint:** `/api/ghengoi`
+- **Method:** PUT
+- **Mô tả:** Cập nhật trạng thái của một ghế ngồi
+- **Request Body:**
+```json
+{
+  "id_ghe_ngoi": 1,
+  "trang_thai": 1
+}
+```
+- **Response:**
+```json
+{
+  "message": "Ghế ngồi đã được cập nhật"
+}
+```
+- **Cách gọi:**
+```javascript
+fetch('http://localhost:3001/api/ghengoi', {
+  method: 'PUT',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    id_ghe_ngoi: 1,
+    trang_thai: 1
+  }),
+})
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));
+```
+
+### 2.7. Xóa ghế ngồi
+- **Endpoint:** `/api/ghengoi`
+- **Method:** DELETE
+- **Mô tả:** Xóa một ghế ngồi
+- **Request Body:**
+```json
+{
+  "id_ghe_ngoi": 1
+}
+```
+- **Response:**
+```json
+{
+  "message": "Ghế ngồi đã được xóa"
+}
+```
+- **Cách gọi:**
+```javascript
+fetch('http://localhost:3001/api/ghengoi', {
+  method: 'DELETE',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    id_ghe_ngoi: 1
+  }),
+})
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));
+```
+
+### 2.8. Xóa tất cả ghế ngồi theo suất chiếu
+- **Endpoint:** `/api/ghengoi/suat`
+- **Method:** DELETE
+- **Mô tả:** Xóa tất cả ghế ngồi của một suất chiếu
+- **Request Body:**
+```json
+{
+  "id_suat_chieu": 1
+}
+```
+- **Response:**
+```json
+{
+  "message": "Đã xóa 50 ghế ngồi của suất chiếu này."
+}
+```
+- **Cách gọi:**
+```javascript
+fetch('http://localhost:3001/api/ghengoi/suat', {
+  method: 'DELETE',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    id_suat_chieu: 1
+  }),
+})
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));
+```
+
+## 3. Mã Trạng Thái Ghế Ngồi
+
+| Mã | Trạng thái |
+|----|------------|
+| 0  | Trống      |
+| 1  | Đã đặt     |
+| 2  | Đang chọn  |
+
+## 4. Lưu ý quan trọng
+
+1. Không thể xóa ghế ngồi đã có vé đặt.
+2. Không thể xóa tất cả ghế ngồi của suất chiếu nếu đã có vé đặt cho suất chiếu đó.
+3. Khi tạo nhiều ghế ngồi cùng lúc, nếu ghế đã tồn tại sẽ được bỏ qua (không báo lỗi).
+4. Trạng thái ghế mặc định là 0 (Trống) nếu không được chỉ định.
+5. Tên ghế phải là duy nhất trong cùng một suất chiếu.

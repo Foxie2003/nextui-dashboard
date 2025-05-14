@@ -1,13 +1,9 @@
-import { Input, Link, Navbar, Text } from "@nextui-org/react";
+import { Input, Navbar, Link, Text } from "@nextui-org/react";
 import React from "react";
-import { FeedbackIcon } from "../icons/navbar/feedback-icon";
-import { GithubIcon } from "../icons/navbar/github-icon";
-import { SupportIcon } from "../icons/navbar/support-icon";
 import { SearchIcon } from "../icons/searchicon";
 import { Box } from "../styles/box";
 import { Flex } from "../styles/flex";
 import { BurguerButton } from "./burguer-button";
-import { NotificationsDropdown } from "./notifications-dropdown";
 import { UserDropdown } from "./user-dropdown";
 
 interface Props {
@@ -16,16 +12,13 @@ interface Props {
 
 export const NavbarWrapper = ({ children }: Props) => {
   const collapseItems = [
-    "Profile",
-    "Dashboard",
-    "Activity",
-    "Analytics",
-    "System",
-    "Deployments",
-    "My Settings",
-    "Team Settings",
-    "Help & Feedback",
-    "Log Out",
+    "Trang chủ",
+    "Phim đang chiếu",
+    "Vé của tôi",
+    "Rạp chiếu",
+    "Lịch chiếu",
+    "Thông tin cá nhân",
+    "Đăng xuất",
   ];
   return (
     <Box
@@ -87,28 +80,14 @@ export const NavbarWrapper = ({ children }: Props) => {
                 dflex: "center",
               },
             }}
-            placeholder="Search..."
+            placeholder="Tìm kiếm phim..."
           />
         </Navbar.Content>
         <Navbar.Content>
           <Navbar.Content hideIn={"md"}>
             <Flex align={"center"} css={{ gap: "$4" }}>
-              <FeedbackIcon />
-              <Text span>Feedback?</Text>
+              <Text span>Hệ thống quản lý rạp chiếu phim</Text>
             </Flex>
-          </Navbar.Content>
-
-          <Navbar.Content>
-            <NotificationsDropdown />
-          </Navbar.Content>
-
-          <Navbar.Content hideIn={"md"}>
-            <SupportIcon />
-          </Navbar.Content>
-          <Navbar.Content>
-            <Link href="https://github.com/" target={"_blank"}>
-              <GithubIcon />
-            </Link>
           </Navbar.Content>
           <Navbar.Content>
             <UserDropdown />

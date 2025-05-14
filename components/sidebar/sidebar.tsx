@@ -1,32 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box } from "../styles/box";
 import { Sidebar } from "./sidebar.styles";
-import { Avatar, Tooltip } from "@nextui-org/react";
+import { Tooltip } from "@nextui-org/react";
 import { Flex } from "../styles/flex";
 import { CompaniesDropdown } from "./companies-dropdown";
 import { HomeIcon } from "../icons/sidebar/home-icon";
-import { PaymentsIcon } from "../icons/sidebar/payments-icon";
-import { BalanceIcon } from "../icons/sidebar/balance-icon";
 import { AccountsIcon } from "../icons/sidebar/accounts-icon";
-import { CustomersIcon } from "../icons/sidebar/customers-icon";
-import { ProductsIcon } from "../icons/sidebar/products-icon";
-import { ReportsIcon } from "../icons/sidebar/reports-icon";
-import { DevIcon } from "../icons/sidebar/dev-icon";
-import { ViewIcon } from "../icons/sidebar/view-icon";
 import { SettingsIcon } from "../icons/sidebar/settings-icon";
-import { CollapseItems } from "./collapse-items";
 import { SidebarItem } from "./sidebar-item";
 import { SidebarMenu } from "./sidebar-menu";
-import { FilterIcon } from "../icons/sidebar/filter-icon";
 import { useSidebarContext } from "../layout/layout-context";
-import { ChangeLogIcon } from "../icons/sidebar/changelog-icon";
 import { useRouter } from "next/router";
 import { useAuth } from "../../contexts/AuthContext";
 
-// Import các icon mới
+// Import các icon
 import { MoviesIcon } from "../icons/sidebar/movies-icon";
 import { TheatersIcon } from "../icons/sidebar/theaters-icon";
 import { ShowtimesIcon } from "../icons/sidebar/showtimes-icon";
+import { LogoutIcon } from "../icons/sidebar/logout-icon";
+import { SeatsIcon } from "../icons/sidebar/seats-icon";
+import { SeatStatusIcon } from "../icons/sidebar/seat-status-icon";
 
 const TicketsIcon = () => (
   <svg
@@ -69,31 +62,21 @@ export const SidebarWrapper = () => {
               href="/"
             />
 
-            <SidebarMenu title="Phim & Vé">
-              <SidebarItem
-                isActive={
-                  router.pathname === "/movies" ||
-                  router.pathname.startsWith("/movies/")
-                }
-                title="Phim đang chiếu"
-                icon={<MoviesIcon />}
-                href="/movies"
-              />
-
-              {isAuthenticated && (
+            {!isAdmin && (
+              <SidebarMenu title="Phim & Vé">
                 <SidebarItem
                   isActive={
-                    router.pathname === "/tickets" ||
-                    router.pathname.startsWith("/tickets/")
+                    router.pathname === "/movies" ||
+                    router.pathname.startsWith("/movies/")
                   }
-                  title="Vé của tôi"
-                  icon={<TicketsIcon />}
-                  href="/tickets"
+                  title="Phim đang chiếu"
+                  icon={<MoviesIcon />}
+                  href="/movies"
                 />
-              )}
-            </SidebarMenu>
+              </SidebarMenu>
+            )}
 
-            {isAuthenticated && (
+            {isAuthenticated && !isAdmin && (
               <SidebarMenu title="Rạp chiếu">
                 <SidebarItem
                   isActive={
@@ -154,6 +137,60 @@ export const SidebarWrapper = () => {
                   icon={<AccountsIcon />}
                   href="/admin/customers"
                 />
+                <SidebarItem
+                  isActive={
+                    router.pathname === "/admin/staff" ||
+                    router.pathname.startsWith("/admin/staff/")
+                  }
+                  title="Quản lý nhân viên"
+                  icon={<AccountsIcon />}
+                  href="/admin/staff"
+                />
+                <SidebarItem
+                  isActive={
+                    router.pathname === "/admin/revenue" ||
+                    router.pathname.startsWith("/admin/revenue/")
+                  }
+                  title="Thống kê doanh thu"
+                  icon={<AccountsIcon />}
+                  href="/admin/revenue"
+                />
+                <SidebarItem
+                  isActive={
+                    router.pathname === "/genres" ||
+                    router.pathname.startsWith("/genres/")
+                  }
+                  title="Quản lý thể loại"
+                  icon={<MoviesIcon />}
+                  href="/genres"
+                />
+                <SidebarItem
+                  isActive={
+                    router.pathname === "/tickets" ||
+                    router.pathname.startsWith("/tickets/")
+                  }
+                  title="Quản lý đơn vé"
+                  icon={<TicketsIcon />}
+                  href="/tickets"
+                />
+                <SidebarItem
+                  isActive={
+                    router.pathname === "/room-seats" ||
+                    router.pathname.startsWith("/room-seats/")
+                  }
+                  title="Quản lý sơ đồ ghế ngồi"
+                  icon={<SeatsIcon />}
+                  href="/room-seats"
+                />
+                <SidebarItem
+                  isActive={
+                    router.pathname === "/seats" ||
+                    router.pathname.startsWith("/seats/")
+                  }
+                  title="Quản lý trạng thái ghế"
+                  icon={<SeatStatusIcon />}
+                  href="/seats"
+                />
               </SidebarMenu>
             )}
 
@@ -167,7 +204,7 @@ export const SidebarWrapper = () => {
                 />
                 <SidebarItem
                   title="Đăng xuất"
-                  icon={<SettingsIcon />}
+                  icon={<LogoutIcon />}
                   onClick={() => {
                     logout();
                     router.push("/");
@@ -194,7 +231,7 @@ export const SidebarWrapper = () => {
             )}
           </Sidebar.Body>
           <Sidebar.Footer>
-            <Tooltip content={"Settings"} rounded color="primary">
+            <Tooltip content={"Chế độ tối"} rounded color="primary">
               <SettingsIcon />
             </Tooltip>
           </Sidebar.Footer>
