@@ -85,12 +85,7 @@ const Login = () => {
         </Card.Body>
         <Card.Footer>
           <Row justify="center">
-            <Text>
-              Chưa có tài khoản?{" "}
-              <Link href="/register">
-                <a>Đăng ký</a>
-              </Link>
-            </Text>
+            <Text>Đăng nhập với tài khoản quản trị viên</Text>
           </Row>
         </Card.Footer>
       </Card>

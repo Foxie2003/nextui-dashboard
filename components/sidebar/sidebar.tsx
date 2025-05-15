@@ -221,12 +221,6 @@ export const SidebarWrapper = () => {
                   icon={<AccountsIcon />}
                   href="/login"
                 />
-                <SidebarItem
-                  isActive={router.pathname === "/register"}
-                  title="Đăng ký"
-                  icon={<AccountsIcon />}
-                  href="/register"
-                />
               </SidebarMenu>
             )}
           </Sidebar.Body>
